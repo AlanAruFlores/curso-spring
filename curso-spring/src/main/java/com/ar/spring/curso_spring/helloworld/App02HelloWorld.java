@@ -1,4 +1,4 @@
-package com.ar.spring.curso_spring;
+package com.ar.spring.curso_spring.helloworld;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
