@@ -1,6 +1,5 @@
-package com.ar.spring.curso_spring;
+package com.ar.spring.curso_spring.game;
 
-import com.ar.spring.curso_spring.game.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
