@@ -27,6 +27,7 @@ public class RecursoTodo {
     @PostMapping("/usuario/{username}/todos")
     public void ingresarNuevoTodo(@PathVariable String username, @RequestBody Todo todo){
         logger.info("El usuario {} creo el todo : {}", username, todo);
+        this.LISTA_TODO.add(todo);
     }
 
 }
