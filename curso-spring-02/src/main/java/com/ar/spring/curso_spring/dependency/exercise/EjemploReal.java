@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
@@ -24,7 +26,8 @@ public class EjemploReal {
         int[] devolverDatos();
     }
 
-    @Component
+    //@Component
+    @Repository
     @Qualifier("mysql")
     public class MysqlServiceData implements DBService{
         @Override
@@ -33,7 +36,8 @@ public class EjemploReal {
         }
     }
 
-    @Component
+    //@Component
+    @Repository
     @Primary
     public class MongoDBServiceData implements DBService{
         @Override
@@ -43,7 +47,8 @@ public class EjemploReal {
     }
 
 
-    @Component
+    //@Component
+    @Service
     public class BussinessService{
 
         private DBService dataService;
