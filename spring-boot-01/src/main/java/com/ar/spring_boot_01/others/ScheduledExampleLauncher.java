@@ -28,7 +28,12 @@ import org.springframework.stereotype.Component;
     #Cron Expression
     Son procesos Daemon en java que se ejecutan en segundo plano , los cuales una vez ejecutados van a seguir persistiendo.
 
-
+    * -> indica que sucede por cada unidad de tiempo
+    ? -> se usa en el <dia de mes> y <dia de semana> para denotar un valor arbitrario.
+    - -> representa un rango de valores, por ejemplo "10-11" en <hora> significa "entre 10 y las 11"
+    , -> especifica multiples valores , por ejemplo "MON, WED, FRI" en <dia de semana> significa "Lunes , Miercoles y viernes"
+    / -> especifica valores incrementables, ejemplo "5/15" en <minuto> significa "a partir del minuto 5, por cada 15 minutos"
+    L -> se usa en varios campos para especificar la ULTIMA unidad, Por ejemplo en el <dia de mes> siginificaria "Cada ultimo dia del mes ... "
  */
 
 @Component
@@ -66,11 +71,21 @@ public class ScheduledExampleLauncher {
     */
 
 
+    /*
     @Scheduled(fixedDelay = 1000, initialDelay = 4000)
     public void scheduleFixedRateWithInitialDelayTask() {
 
         long now = System.currentTimeMillis() / 1000;
         System.out.println(
                 "Fixed rate task with one second initial delay - " + now);
+    }*/
+
+    /*Se ejecuta por cada segundo impar de todos los dias*/
+
+    @Scheduled(cron = "1/2 * * * * ?")
+    public void scheduledCronExpression(){
+        System.out.println("Ejecutando expresion impar");
     }
+
+
    }
