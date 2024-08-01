@@ -1,6 +1,9 @@
-package com.ar.dominio;
+package com.ar.spring_jpa.dominio;
+
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -8,14 +11,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Producto {
+public class Carrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre;
-    private Double precio;
 
-    @ManyToOne
-    @JoinColumn(name="carrito_id", nullable=false)
-    private Carrito carrito;
+    @OneToMany(mappedBy = "carrito")
+    private List<Producto> listProductos;
 }
