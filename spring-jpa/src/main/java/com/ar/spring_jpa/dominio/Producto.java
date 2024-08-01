@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode(exclude = {"nombre", "precio"})
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +17,6 @@ public class Producto {
     private Double precio;
 
     @ManyToOne
-    @JoinColumn(name="carrito_id", nullable=false)
+    @JoinColumn(nullable=true)
     private Carrito carrito;
 }

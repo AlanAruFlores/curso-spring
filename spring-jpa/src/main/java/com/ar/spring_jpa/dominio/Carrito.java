@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,5 +18,5 @@ public class Carrito {
     private Long id;
 
     @OneToMany(mappedBy = "carrito")
-    private List<Producto> listProductos;
+    private Set<Producto> listProductos;
 }
