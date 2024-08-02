@@ -1,4 +1,6 @@
 package com.ar.spring_jpa.dominio;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +9,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"carrito"})
 @EqualsAndHashCode(exclude = {"nombre", "precio"})
 public class Producto {
     @Id

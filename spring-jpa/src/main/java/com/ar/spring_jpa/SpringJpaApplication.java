@@ -4,11 +4,13 @@ import com.ar.spring_jpa.dominio.Carrito;
 import com.ar.spring_jpa.dominio.Producto;
 import com.ar.spring_jpa.infraestructura.CarritoJpaRepository;
 import com.ar.spring_jpa.infraestructura.ProductoJpaRepository;
+import lombok.ToString;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ public class SpringJpaApplication {
 
 	//Inyecto un bean para ejecutar en consola y usar estos repositorios
 	@Bean
+	@Transactional
 	CommandLineRunner commandLineRunner(CarritoJpaRepository carritoJpaRepository, ProductoJpaRepository productoJpaRepository){
 		return args->{
 			Carrito carritoObtenido = carritoJpaRepository.save(new Carrito());
@@ -44,6 +47,9 @@ public class SpringJpaApplication {
 			carritoJpaRepository.save(carritoObtenido);
 
 
+			//Ejecutando querys customizables
+			Set<Producto> productosPorCarrito = productoJpaRepository.findAllByCarrito(carritoObtenido);
+			productosPorCarrito.stream().forEach(System.out::println);
 
 		};
 	}

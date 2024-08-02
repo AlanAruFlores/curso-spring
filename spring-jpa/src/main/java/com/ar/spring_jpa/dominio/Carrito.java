@@ -1,5 +1,6 @@
 package com.ar.spring_jpa.dominio;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,6 @@ public class Carrito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "carrito")
+    @OneToMany(mappedBy = "carrito", fetch = FetchType.EAGER)
     private Set<Producto> listProductos;
 }
