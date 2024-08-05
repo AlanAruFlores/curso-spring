@@ -48,6 +48,13 @@
                     <goals>
                         <goal>report</goal>
                     </goals>
+                    <!--Partes de la app a ignorar en la cobertura de nuestros testeos ya que no se testea las entitys-->
+                    <configuration>
+                        <excludes>
+                            <exclude>**/Main.class</exclude>
+                            <exclude>**/entity/Player.class</exclude>
+                        </excludes>
+                    </configuration>
                 </execution>
                 <execution>
                     <id>jacoco-check</id>
