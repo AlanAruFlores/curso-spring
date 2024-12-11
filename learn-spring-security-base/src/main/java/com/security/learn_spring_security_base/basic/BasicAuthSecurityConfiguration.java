@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -77,14 +79,18 @@ public class BasicAuthSecurityConfiguration {
 
     //Guardamos los usuarios en h2 database
     @Bean
-    UserDetailsService userDetailsService(DataSource dataSource) {
+    UserDetailsService userDetailsService(DataSource dataSource, PasswordEncoder passwordEncoder) {
         var user  =User.withUsername("alan") // nombre
-                .password("{noop}alan") //noop --> no encripta
+                //.password("{noop}alan") //noop --> no encripta
+                .password("dummy")
+                .passwordEncoder(str -> passwordEncoder.encode(str)) // Codifico la contraseña
                 .roles(ROLES.USER.name()) // rol del usuario
                 .build(); //creamos el usuario
 
         var admin  = User.withUsername("admin")
-                .password("{noop}admin")
+                //.password("{noop}admin")
+                .password("admin")
+                .passwordEncoder(str -> passwordEncoder.encode(str)) // Codifico la contraseña
                 .roles(ROLES.ADMIN.name(), ROLES.USER.name())
                 .build();
 
@@ -93,6 +99,11 @@ public class BasicAuthSecurityConfiguration {
         jdbcDetailsManager.createUser(admin);
 
         return jdbcDetailsManager; // guardamos los usuarios en la base de datos h2
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
