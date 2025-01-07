@@ -1,6 +1,7 @@
 spring:
   application:
     name: SpringSecurityApp
+  # Database Information
   jpa:
     hibernate:
       ddl-auto: update
@@ -10,4 +11,8 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3307/securitydb
-
+  #Security Information
+  security:
+    user:
+      name: alan
+      password: alan1234
