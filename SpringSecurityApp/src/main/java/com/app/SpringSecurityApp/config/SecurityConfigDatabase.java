@@ -1,7 +1,8 @@
 package com.app.SpringSecurityApp.config;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.app.SpringSecurityApp.persistence.entity.RoleEnum;
+import com.app.SpringSecurityApp.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,7 +15,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,11 +27,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.ArrayList;
 import java.util.List;
 
-//Vamos a configurar la seguridad de nuestra aplicacion de spring boot
+//Vamos a configurar la seguridad de nuestra aplicacion de spring boot con base de datos
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfigDatabase {
 
     /**
      * Configuramos el componente "FilterChain"
@@ -49,12 +49,14 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //
                 .authorizeHttpRequests(http->{
-                    //endpoint publico sin autenticacion
-                    http.requestMatchers(HttpMethod.GET, "/auth/hello").permitAll();
+                    //Asignando permisos a los endpoints
+                    //http.requestMatchers(HttpMethod.GET, "/auth/get").hasAuthority("READ");
+                    http.requestMatchers(HttpMethod.GET, "/auth/get").hasAnyRole(RoleEnum.GUEST.name());
 
-                    //se accede si el permiso "read" esta asociado al usuario
-                    http.requestMatchers(HttpMethod.GET, "/auth/hello-secured").hasAuthority("WRITE");
-
+                    http.requestMatchers(HttpMethod.POST, "/auth/post").hasAuthority("WRITE");
+                    http.requestMatchers(HttpMethod.PUT, "/auth/put").hasAuthority("UPDATE");
+                    http.requestMatchers(HttpMethod.DELETE, "/auth/delete").hasAuthority("DELETE");
+                    http.requestMatchers(HttpMethod.PATCH, "/auth/patch").hasAuthority("REFACTOR");
                    // http.anyRequest().denyAll(); // deniega el acceso a los demas endpoints no especificados
                     http.anyRequest().authenticated(); // deniega el acceso a los demas endpoints si no estan autenticados
                 })
@@ -73,7 +75,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService){
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsService){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder); //componente encoder
         provider.setUserDetailsService(userDetailsService); // componente para la base de datos
@@ -81,44 +83,9 @@ public class SecurityConfig {
         return provider;
     }
 
-    /**
-     * Este UserDetailService vamos a comunicarlo con una base de datos en memoria por ahora
-     * UserDetails: objeto donde estara la informacion de un usuario
-     * @return
-     */
-    @Bean
-    public UserDetailsService userDetailsService(){
-        //Lista con varios usuarios
-        List<UserDetails> userDetailsList = new ArrayList<>();
-        userDetailsList.add(
-                User.withUsername("aruflo")
-                        .password("aruflo1234")
-                        .roles("ADMIN") // rol (un rol puede tener varios permisos)
-                        .authorities("READ", "WRITE") // permisos
-                        .build());
-        userDetailsList.add(
-                User.withUsername("flores")
-                        .password("flores1234")
-                        .roles("USER") // rol (un rol puede tener varios permisos)
-                        .authorities("READ") // permisos
-                        .build());
-
-
-    /* un usuario
-        UserDetails userDetails = User.withUsername("aruflo")
-                .password("aruflo1234")
-                .roles("ADMIN") // rol (un rol puede tener varios permisos)
-                .authorities("READ", "WRITE") // permisos
-                .build();
-      */
-
-        //cargamos en memoria los usuarios
-        return new InMemoryUserDetailsManager(userDetailsList);
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance(); // no encripta, ideal, para pruebas
+        return new BCryptPasswordEncoder(); // encripta
     }
 
 

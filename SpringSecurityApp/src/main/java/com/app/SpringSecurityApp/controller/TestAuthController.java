@@ -1,21 +1,34 @@
 package com.app.SpringSecurityApp.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class TestAuthController {
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello world";
+    @GetMapping("/get")
+    public String helloGet(){
+        return "Hello World - GET";
     }
 
-    @GetMapping("/hello-secured")
-    public String helloSecured(){
-        return "hello secured";
+    @PostMapping("/post")
+    public String helloPost(){
+        return "Hello World - POST";
+    }
+
+    @PutMapping("/put")
+    public String helloPut(){
+        return "Hello World - PUT";
+    }
+
+    @DeleteMapping("/delete")
+    public String helloDelete(){
+        return "Hello World - DELETE";
+    }
+
+    @PatchMapping("/patch")
+    public String helloPatch(){
+        return "Hello World - PATCH";
     }
 
 }
