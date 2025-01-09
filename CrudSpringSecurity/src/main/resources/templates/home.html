@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
 </head>
 <body>
-  <h1>Home</h1>
+  <h1>Task home</h1>
+  <a>Crear nueva tarea</a>
+<table>
+    <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Ver</th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')" >Eliminar</th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')">Actualizar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="task:${taskList}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td>
+                <button>Ver</button>
+            </td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <button>Eliminar</button>
+            </td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <button>Actualizar</button>
+            </td>
+
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

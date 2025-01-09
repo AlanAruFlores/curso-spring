@@ -37,6 +37,7 @@ public class SpringWebSecurity {
                     //Asignando permisos a los endpoints
                    // http.anyRequest().denyAll(); // deniega el acceso a los demas endpoints no especificados
                     http.requestMatchers("/login/**").permitAll();
+                    http.requestMatchers("/registro/**").permitAll();
                     http.anyRequest().authenticated();
                 })
                 .formLogin(form->form
@@ -47,7 +48,6 @@ public class SpringWebSecurity {
                 .logout(logout->
                         logout.logoutSuccessUrl("/login/")
                                 .permitAll())
-
                 .build();
     }
 
