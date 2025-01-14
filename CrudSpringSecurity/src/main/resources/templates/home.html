@@ -6,6 +6,11 @@
 </head>
 <body>
   <h1>Task home</h1>
+  <div sec:authorize="isAuthenticated()">
+      <form th:action="@{|/logout|}" method="POST">
+          <input type="submit" value="Cerrar Sesion">
+      </form>
+  </div>
   <a>Crear nueva tarea</a>
 <table>
     <thead>
