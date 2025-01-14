@@ -9,7 +9,12 @@
     <div th:if="${flagCreate}" class="alert alert-success" role="alert">
         Se creo correctamente la tarea
     </div>
-
+    <div th:if="${flagDelete}" class="alert alert-danger" role="alert">
+        Se elimino correctamente la tarea
+    </div>
+    <div th:if="${flagUpdate}" class="alert alert-primary" role="alert">
+        Se actualizo  la tarea
+    </div>
   <h1>Task home</h1>
   <div sec:authorize="isAuthenticated()">
       <form th:action="@{|/logout|}" method="POST">
@@ -35,10 +40,10 @@
                 <a th:href="@{|/task/show-task/${task.id}|}" class="btn btn-primary">Ver</a>
             </td>
             <td sec:authorize="hasRole('ROLE_ADMIN')">
-                <button>Eliminar</button>
+                <a th:href="@{|/task/delete-task/${task.id}|}" class="btn btn-danger">Eliminar</a>
             </td>
             <td sec:authorize="hasRole('ROLE_ADMIN')">
-                <button>Actualizar</button>
+                <a th:href="@{|/task/update-task/${task.id}|}" class="btn btn-warning">Actualizar</a>
             </td>
 
         </tr>

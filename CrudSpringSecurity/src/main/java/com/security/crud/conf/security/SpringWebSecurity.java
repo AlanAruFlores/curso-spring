@@ -38,6 +38,11 @@ public class SpringWebSecurity {
                    // http.anyRequest().denyAll(); // deniega el acceso a los demas endpoints no especificados
                     http.requestMatchers("/login/**").permitAll();
                     http.requestMatchers("/registro/**").permitAll();
+
+                    http.requestMatchers("/task/update-task/**").hasAnyRole("ADMIN");
+                    http.requestMatchers("/task/delete-task/**").hasAnyRole("ADMIN");
+
+
                     http.anyRequest().authenticated();
                 })
                 .formLogin(form->form

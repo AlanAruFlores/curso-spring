@@ -64,4 +64,29 @@ public class TaskController {
         return "show-task";
     }
 
+    //Admin's actions who is the only to make these
+
+    @RequestMapping(value="/delete-task/{id}", method = RequestMethod.GET)
+    public String deleteTask(Model model, @PathVariable("id")Long id, RedirectAttributes redirectAttributes){
+        taskService.deleteTaskById(id);
+        redirectAttributes.addFlashAttribute("flagDelete", true);
+        return "redirect:/task/home";
+    }
+
+    @RequestMapping(value="/update-task/{id}", method = RequestMethod.GET)
+    public String updateTask(Model model, @PathVariable("id") Long id){
+        Task task = this.taskService.getTaskById(id);
+        model.addAttribute("task", task);
+        return "update-task";
+    }
+
+    @RequestMapping(value = "/update-task", method = RequestMethod.POST)
+    public String updateTask(Model model, @ModelAttribute("task") Task task, RedirectAttributes redirectAttributes){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = this.userService.getUserByUserName(authentication.getName());
+        task.setUser(user);
+        taskService.updateTask(task);
+        redirectAttributes.addFlashAttribute("flagUpdate", true);
+        return "redirect:/task/home";
+    }
 }
